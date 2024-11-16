@@ -42,6 +42,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     event RaffleEntered(address indexed player);
     event WinnerPicked(address indexed winner);
+    event RequestedRaffleWinner(uint256 indexed requestId);
 
     constructor(
         uint256 enteranceFee,
@@ -84,7 +85,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
      * @return upkeepNeeded - true if it's time to restart the lottery
      * @return - ignored
      */
-    function checkUkeep(
+    function checkUpkeep(
         bytes memory
     ) public view returns (bool upkeepNeeded, bytes memory) {
         bool timeHasPassed = ((block.timestamp - s_lastTimeStamp) >=
@@ -100,7 +101,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function performUpkeep(bytes calldata) external {
         // if ((block.timestamp - s_lastTimeStamp) < i_interval) revert();
-        (bool upKeepNeeded, ) = checkUkeep("");
+        (bool upKeepNeeded, ) = checkUpkeep("");
 
         if (!upKeepNeeded)
             revert Raffle__UpkeepNotNeeded(
@@ -122,7 +123,8 @@ contract Raffle is VRFConsumerBaseV2Plus {
                     VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
                 )
             });
-        s_vrfCoordinator.requestRandomWords(request);
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
+        emit RequestedRaffleWinner(requestId);
     }
 
     function fulfillRandomWords(
