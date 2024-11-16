@@ -26,6 +26,7 @@ contract HelperConfig is CodeConstants, Script {
         uint32 callbackGasLimit;
         uint256 subscriptionId;
         address link;
+        address account;
     }
 
     NetworkConfig public localNetworkConfig;
@@ -54,14 +55,15 @@ contract HelperConfig is CodeConstants, Script {
     function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
         return
             NetworkConfig({
-                enteranceFee: 0.01 ether,
-                interval: 30,
-                vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
-                gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-                callbackGasLimit: 500000,
-                subscriptionId: 107781390691437435538307744758505433437805204698727345830138549221849036396931,
-                link: 0x779877A7B0D9E8603169DdbD7836e478b4624789
-            });
+            enteranceFee: 0.01 ether,
+            interval: 30,
+            vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
+            callbackGasLimit: 500000,
+            subscriptionId: 107781390691437435538307744758505433437805204698727345830138549221849036396931,
+            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+            account: 0xA4AdD9E084Ba98f485f3d5d890D10A2D69f8fEB4
+        });
     }
 
     function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
@@ -85,7 +87,8 @@ contract HelperConfig is CodeConstants, Script {
             gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
             callbackGasLimit: 500000,
             subscriptionId: 0,
-            link: address(linkToken)
+            link: address(linkToken),
+            account: 0x4e59b44847b379578588920cA78FbF26c0B4956C
         });
 
         return localNetworkConfig;
